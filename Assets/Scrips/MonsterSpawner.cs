@@ -37,7 +37,7 @@ public class BotSpawner : NetworkBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(60f); // Attends 60 secondes
+            yield return new WaitForSeconds(30f); // Attends 30 secondes
             SpawnBot();
         }
     }

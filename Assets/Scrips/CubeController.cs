@@ -20,20 +20,29 @@ public class CubeDashRectangle : NetworkBehaviour
     // Rotation lissée
     private Quaternion targetRotation;
 
+    public GameObject playerUICanvas; // Drag & drop l’enfant UI (Canvas) ici
+
+    public override void OnStartLocalPlayer()
+    {
+        // N'activer l'UI que pour le joueur local
+        if (playerUICanvas != null)
+            playerUICanvas.SetActive(true);
+    }
+
     void Start()
     {
-        if(isLocalPlayer)
+        if (isLocalPlayer)
         {
             // Instancie une caméra que pour le joueur local
             GameObject camObj = new GameObject("LocalPlayerCamera");
             Camera cam = camObj.AddComponent<Camera>();
             camObj.tag = "MainCamera"; // pour Camera.main
-            camObj.transform.position = transform.position + new Vector3(5,10,-5); // Positionne l'offset
+            camObj.transform.position = transform.position + new Vector3(5, 10, -5); // Positionne l'offset
 
             // Ajoute et configure le script FollowedByCamera sur ton joueur
             FollowedByCamera camFollow = gameObject.AddComponent<FollowedByCamera>();
             camFollow.cameraToFollow = cam;
-            camFollow.offset = new Vector3(-0.5f,8,-8);
+            camFollow.offset = new Vector3(-0.5f, 8, -8);
             camFollow.smoothSpeed = 0.125f;
             camObj.transform.rotation = Quaternion.Euler(45, 0, 0); // 45° vers le bas, Yaw 0, Roll 0
 
