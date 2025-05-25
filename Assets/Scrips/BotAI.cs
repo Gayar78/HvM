@@ -1,6 +1,7 @@
 using UnityEngine;
+using Mirror;
 
-public class BotAI : MonoBehaviour
+public class BotAI : NetworkBehaviour
 {
     public float botSpeed = 3f;           // Moins rapide que le joueur
     public float stopDistance = 1.0f;     // Distance minimale pour "coller" sans traverser
@@ -11,6 +12,7 @@ public class BotAI : MonoBehaviour
 
     private void Update()
     {
+        if (!isServer) return;
         // Cherche tous les joueurs dans la range
         Collider[] playersInRange = Physics.OverlapSphere(transform.position, detectionRange, playerLayer);
 
