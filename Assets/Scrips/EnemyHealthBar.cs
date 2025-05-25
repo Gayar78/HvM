@@ -6,7 +6,6 @@ public class EnemyHealthBar : MonoBehaviour
     public Health healthTarget; // à assigner au Health du bot
     public Image fillImage;
 
-
     private void Update()
     {
         if (healthTarget != null && fillImage != null)
@@ -15,8 +14,13 @@ public class EnemyHealthBar : MonoBehaviour
             fillImage.fillAmount = ratio;
         }
 
-        // Toujours orienter la barre face à la caméra
+        // Billboard : toujours face caméra (sans inclinaison verticale)
         if (Camera.main != null)
-            transform.forward = Camera.main.transform.forward;
+        {
+            Vector3 camForward = Camera.main.transform.forward;
+            camForward.y = 0f; // Ignore le tilt vertical
+            if (camForward.sqrMagnitude > 0.01f)
+                transform.forward = camForward.normalized;
+        }
     }
 }
