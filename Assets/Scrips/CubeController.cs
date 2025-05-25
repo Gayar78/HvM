@@ -224,6 +224,7 @@ public class CubeDashRectangle : NetworkBehaviour
 
             if (lineRenderer != null)
             {
+                lineRenderer.positionCount = 5;
                 lineRenderer.SetPosition(0, p1 + up);
                 lineRenderer.SetPosition(1, p2 + up);
                 lineRenderer.SetPosition(2, p3 + up);
