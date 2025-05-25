@@ -4,26 +4,30 @@ public class BotAttack : MonoBehaviour
 {
     public float attackRange = 1.5f;
     public int attackDamage = 10;
-    public float attackRate = 1f; // 1 attaque par seconde
+    public float attackRate = 1f;
     private float nextAttackTime = 0f;
-    public LayerMask playerLayer; // À configurer dans l’inspector pour viser le(s) joueur(s)
+
+    private BotAI botAI;
+
+    void Start()
+    {
+        botAI = GetComponent<BotAI>();
+    }
 
     private void Update()
     {
-        if (Time.time >= nextAttackTime)
+        if (botAI == null || botAI.TargetPlayer == null)
+            return;
+
+        Transform target = botAI.TargetPlayer;
+        float dist = Vector3.Distance(transform.position, target.position);
+
+        if (dist <= attackRange && Time.time >= nextAttackTime)
         {
-            // Détecte tous les joueurs dans la zone d'attaque
-            Collider[] hits = Physics.OverlapSphere(transform.position, attackRange, playerLayer);
-            foreach (var hit in hits)
+            Health playerHealth = target.GetComponent<Health>();
+            if (playerHealth != null && playerHealth.isPlayer)
             {
-                Health playerHealth = hit.GetComponent<Health>();
-                if (playerHealth != null && playerHealth.isPlayer)
-                {
-                    playerHealth.TakeDamage(attackDamage);
-                }
-            }
-            if (hits.Length > 0)
-            {
+                playerHealth.TakeDamage(attackDamage);
                 nextAttackTime = Time.time + 1f / attackRate;
             }
         }

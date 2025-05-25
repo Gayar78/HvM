@@ -7,8 +7,9 @@ public class BotAI : NetworkBehaviour
     public float stopDistance = 1.0f;
     public float detectionRange = 30f;
     public LayerMask playerLayer;
-
     private Transform targetPlayer;
+    public Transform TargetPlayer => targetPlayer;
+
 
     private void Update()
     {
