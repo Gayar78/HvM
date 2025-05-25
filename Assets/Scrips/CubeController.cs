@@ -22,17 +22,30 @@ public class CubeDashRectangle : NetworkBehaviour
 
     void Start()
     {
-        if(isLocalPlayer){
-            moveTarget = transform.position;
-            targetRotation = transform.rotation;
+        if(isLocalPlayer)
+        {
+            // Instancie une caméra que pour le joueur local
+            GameObject camObj = new GameObject("LocalPlayerCamera");
+            Camera cam = camObj.AddComponent<Camera>();
+            camObj.tag = "MainCamera"; // pour Camera.main
+            camObj.transform.position = transform.position + new Vector3(5,10,-5); // Positionne l'offset
 
-            if (lineRenderer != null)
+            // Ajoute et configure le script FollowedByCamera sur ton joueur
+            FollowedByCamera camFollow = gameObject.AddComponent<FollowedByCamera>();
+            camFollow.cameraToFollow = cam;
+            camFollow.offset = new Vector3(-0.5f,8,-8);
+            camFollow.smoothSpeed = 0.125f;
+            camObj.transform.rotation = Quaternion.Euler(45, 0, 0); // 45° vers le bas, Yaw 0, Roll 0
+
+            // Désactive les autres caméras éventuelles
+            foreach (Camera c in Camera.allCameras)
             {
-                lineRenderer.enabled = false;
-                lineRenderer.positionCount = 5;
+                if (c != cam)
+                    c.enabled = false;
             }
         }
     }
+
 
     void Update()
     {
