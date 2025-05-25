@@ -1,10 +1,11 @@
 using UnityEngine;
-using UnityEngine.SceneManagement; // Pour quitter la partie si le joueur meurt
+using UnityEngine.SceneManagement;
+using Mirror;
 
-public class Health : MonoBehaviour
+public class Health : NetworkBehaviour 
 {
     public int maxHealth = 100;
-    public int currentHealth;
+    [SyncVar] public int currentHealth;
     public bool isPlayer = false; // Différencie le joueur du bot
 
     void Start()
